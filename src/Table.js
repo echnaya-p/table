@@ -1,13 +1,15 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import generateUniqueId from "./utils/utils";
+import Pagination from "./Pagination";
 
 function Table(props) {
-  const {arrayOfData} = props;
+  const { arrayOfData } = props;
 
   const [ text, setText ] = useState('');
   const [ newData, setNewData ] = useState([...arrayOfData]);
   const [ sortedParams, setSorted ] = useState({});
   const [ selectedSort, setSelectedSort ] = useState('');
+  const [ currentPage, setCurrentPage ] = useState(1);
 
   const handleChangeText = () => (e) => {
     setText(e.target.value);
@@ -22,11 +24,10 @@ function Table(props) {
   const filter = () => {
     const filteredData = arrayOfData.filter(data => {
       const values = Object.values(data);
-      const isIncluded = values.some(value => {
+
+      return  values.some(value => {
         return value.toLowerCase().includes(text.toLowerCase());
       });
-
-      return isIncluded;
     });
 
     if (selectedSort) {
@@ -47,8 +48,8 @@ function Table(props) {
     return keys.map((key) => <td key={generateUniqueId()}>{data[key]}</td>);
   };
 
-  const renderRows = () =>{
-    return newData.map((data) =><tr key={generateUniqueId()}>{renderRow(data)}</tr>);
+  const renderRows = (array) =>{
+    return array.map((data) =><tr key={generateUniqueId()}>{renderRow(data)}</tr>);
   };
 
   useEffect(() => {
@@ -60,7 +61,12 @@ function Table(props) {
       <input type="text" onChange={handleChangeText()} />
       <table>
         <thead><tr>{renderHeader()}</tr></thead>
-        <tbody>{renderRows()}</tbody>
+        <Pagination
+          newData={newData}
+          renderRows={renderRows}
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+        />
       </table>
     </div>
   );

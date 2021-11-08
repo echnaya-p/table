@@ -2,23 +2,15 @@ import './App.css';
 import React from "react";
 import Table from "./Table";
 
-const example = [
-  {
-    name: 'book 1',
-    author: 'author 2',
-    release: '2003',
-  },
-  {
-    name: 'book 2',
-    author: 'author 3',
-    release: '2001',
-  },
-  {
-    name: 'book 3',
-    author: 'author 1',
-    release: '2002',
-  },
-];
+const example = [];
+
+for (let i = 1; i <= 150; i++) {
+  example.push({
+    name: 'book ' + i,
+    author: 'author ' + (151 - i),
+    pages: (i * 10).toString(),
+  });
+}
 
 function App() {
   return (
