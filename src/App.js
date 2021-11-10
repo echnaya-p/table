@@ -1,21 +1,28 @@
 import './App.css';
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Table from "./Table";
+import request from "./request";
 
-const example = [];
 
-for (let i = 1; i <= 150; i++) {
-  example.push({
-    name: 'book ' + i,
-    author: 'author ' + (151 - i),
-    pages: (i * 10).toString(),
-  });
-}
 
 function App() {
+  const [dataForTable, setDataForTable] = useState([]);
+  const url = 'https://jsonplaceholder.typicode.com/todos/';
+
+  useEffect(() => {
+    async function getDataByAPI() {
+      const response = await request(url);
+      setDataForTable(response);
+    }
+
+    getDataByAPI();
+  }, []);
+
+  console.log(dataForTable);
+
   return (
     <div className="App">
-      <Table arrayOfData={example} />
+      <Table arrayOfData={dataForTable} />
     </div>
   );
 }
