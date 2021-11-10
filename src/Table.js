@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-import generateUniqueId from "./utils/utils";
 import Pagination from "./Pagination";
+import TableHead from "./TableHead";
+import TableBody from "./TableBody";
 
 function Table(props) {
   const { arrayOfData } = props;
@@ -10,8 +11,10 @@ function Table(props) {
   const [ sortedParams, setSorted ] = useState({});
   const [ selectedSort, setSelectedSort ] = useState('');
   const [ currentPage, setCurrentPage ] = useState(1);
+  const [ numberPerPage, setNumberPerPage ] = useState(10);
+  const [numberOfColumn, setNumberOfColumn] = useState(0);;
 
-  const handleChangeText = () => (e) => {
+  const handleChangeText = (e) => {
     setText(e.target.value);
   };
 
@@ -43,33 +46,35 @@ function Table(props) {
     setNewData(filteredData);
   };
 
-  const renderHeader = () => {
-    const keys = Object.keys(arrayOfData[0]);
-    return keys.map((key) => <th key={generateUniqueId()} onClick={handleSort(key)}>{key}</th>);
-  };
-
-  const renderRow = (data) => {
-    const keys = Object.keys(data);
-    return keys.map((key) => <td key={generateUniqueId()}>{data[key].toString()}</td>);
-  };
-
-  const renderRows = (array) => {
-    return array.map((data) =><tr key={generateUniqueId()}>{renderRow(data)}</tr>);
-  };
-
   const renderTable = () => {
     return (
       <div>
-        <input type="text" onChange={handleChangeText()} />
+        <input type="text" onChange={handleChangeText} />
         <table>
-          <thead><tr>{renderHeader()}</tr></thead>
+          {arrayOfData?.length > 0 &&
+            <TableHead
+              arrayOfData={arrayOfData}
+              onSort={handleSort}
+            />
+          }
+          {arrayOfData?.length >= 0 &&
+            <TableBody
+              newData={newData}
+              currentPage={currentPage}
+              numberPerPage={numberPerPage}
+              numberOfColum={numberOfColumn}
+            />
+          }
+        </table>
+        {arrayOfData?.length > numberPerPage &&
           <Pagination
             newData={newData}
-            renderRows={renderRows}
             currentPage={currentPage}
+            numberPerPage={numberPerPage}
             setCurrentPage={setCurrentPage}
+            setNumberPerPage={setNumberPerPage}
           />
-        </table>
+        }
       </div>
     );
   };
@@ -83,10 +88,10 @@ function Table(props) {
   }, [arrayOfData]);
 
   if (arrayOfData?.length === 0) {
-    return <span>Нет данных</span>
+    return <span>Загрузка данных</span>
   }
 
-  return arrayOfData?.length > 0 ? renderTable() : <span>Загрузка данных</span>;
+  return arrayOfData?.length > 0 ? renderTable() : <span>Ошибка загрузки данных</span>;
 }
 
 export default Table;

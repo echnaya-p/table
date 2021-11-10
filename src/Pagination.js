@@ -1,17 +1,9 @@
-import React, { useEffect } from "react";
+import React from "react";
 
 function Pagination(props) {
-  const { newData, currentPage, setCurrentPage, renderRows } = props;
+  const { newData, currentPage, numberPerPage, setCurrentPage } = props;
   const numberOfItems = newData.length;
-  const numberPerPage = 50;
   const numberOfPage = Math.ceil(numberOfItems/numberPerPage);
-
-  const buildPage = (currentPage) => {
-    const indexOfStart = (currentPage - 1) * numberPerPage;
-    const indexOfEnd = indexOfStart + numberPerPage;
-
-    return newData.slice(indexOfStart, indexOfEnd);
-  };
 
   const handleChangePage = (page) => () => {
     switch (page) {
@@ -57,7 +49,7 @@ function Pagination(props) {
         <>
           {renderPages(pages.slice(0,1))}
           <span>...</span>
-          {renderPages(pages.slice(currentPage - 2,currentPage + 2))}
+          {renderPages(pages.slice(currentPage - 2,currentPage + 1))}
           <span>...</span>
           {renderPages(pages.slice(-1))}
         </>
@@ -70,20 +62,16 @@ function Pagination(props) {
 
   };
 
-
-  useEffect(() => {
-    buildPage(currentPage);
-  }, [currentPage]);
-
   return  (
-    <>
-      <tbody>{renderRows(buildPage(currentPage))}</tbody>
-      <div>
-        {(currentPage > 1) && <button onClick={handleChangePage('previous')}>{'<'}</button>}
-        {renderPagesButton(numberOfPage)}
-        {(currentPage !== numberOfPage) && <button onClick={handleChangePage('next')}>{'>'}</button>}
-      </div>
-    </>
+    <div>
+      {(currentPage > 1) ?
+        <button onClick={handleChangePage('previous')}>{'<'}</button> :
+        <button disabled onClick={handleChangePage('previous')}>{'<'}</button>}
+      {renderPagesButton(numberOfPage)}
+      {(currentPage !== numberOfPage) ?
+        <button onClick={handleChangePage('next')}>{'>'}</button> :
+        <button disabled onClick={handleChangePage('next')}>{'>'}</button>}
+    </div>
   );
 }
 
