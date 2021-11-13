@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Pagination from "./Pagination";
 import TableHead from "./TableHead";
 import TableBody from "./TableBody";
+import './styles.css';
 
 function Table(props) {
   const { arrayOfData } = props;
@@ -12,7 +13,7 @@ function Table(props) {
   const [ selectedSort, setSelectedSort ] = useState('');
   const [ currentPage, setCurrentPage ] = useState(1);
   const [ numberPerPage, setNumberPerPage ] = useState(10);
-  const [numberOfColumn, setNumberOfColumn] = useState(0);;
+  const [ numberOfColumn, setNumberOfColumn ] = useState(0);
 
   const handleChangeText = (e) => {
     setText(e.target.value);
@@ -49,7 +50,7 @@ function Table(props) {
   const renderTable = () => {
     return (
       <div>
-        <input type="text" onChange={handleChangeText} />
+        <input type="text" onChange={handleChangeText} placeholder="Поиск" />
         <table>
           {arrayOfData?.length > 0 &&
             <TableHead
