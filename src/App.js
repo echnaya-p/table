@@ -10,15 +10,11 @@ function App() {
   const url = 'https://jsonplaceholder.typicode.com/todos/';
 
   useEffect(() => {
-    async function getDataByAPI() {
+    (async function getDataByAPI() {
       const response = await request(url);
       setDataForTable(response);
-    }
-
-    getDataByAPI();
+    })();
   }, []);
-
-  console.log(dataForTable);
 
   return (
     <div className="App">
