@@ -1,4 +1,5 @@
 import React from "react";
+import "./pagination.css"
 
 function Pagination(props) {
   const { newData, currentPage, numberPerPage, setCurrentPage } = props;
@@ -29,7 +30,12 @@ function Pagination(props) {
     }
 
     const renderPages = (pages) => pages.map((page) => {
-      return <button onClick={handleChangePage(page)} key={page}>{page}</button>;
+      return (<button
+        onClick={handleChangePage(page)}
+        key={page} className={currentPage === page ? 'active' : ''}
+      >
+        {page}
+      </button>);
     });
 
     if (numberOfPage === 1) {
@@ -48,9 +54,9 @@ function Pagination(props) {
       return (
         <>
           {renderPages(pages.slice(0,1))}
-          <span>...</span>
+          <span>{'...'}</span>
           {renderPages(pages.slice(currentPage - 2,currentPage + 1))}
-          <span>...</span>
+          <span>{'...'}</span>
           {renderPages(pages.slice(-1))}
         </>
       );
@@ -63,7 +69,7 @@ function Pagination(props) {
   };
 
   return  (
-    <div>
+    <div className="pagination">
       {(currentPage > 1) ?
         <button onClick={handleChangePage('previous')}>{'<'}</button> :
         <button disabled onClick={handleChangePage('previous')}>{'<'}</button>}
