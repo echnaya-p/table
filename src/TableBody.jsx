@@ -2,7 +2,7 @@ import React, {useEffect} from "react";
 import generateUniqueId from "./utils/utils";
 
 function TableBody(props) {
-  const { newData, currentPage, numberPerPage, numberOfColumn } = props;
+  const { newData, currentPage, numberPerPage } = props;
 
   const renderRow = (data) => {
     const keys = Object.keys(data);
@@ -24,7 +24,7 @@ function TableBody(props) {
     buildPage(currentPage);
   }, [currentPage]);
 
-  return <tbody>{newData.length === 0 ? <tr><td colspan={numberOfColumn}>Нет данных</td></tr> :renderRows(buildPage(currentPage))}</tbody>;
+  return <tbody>{newData.length === 0 ? <tr><td>Нет данных</td></tr> :renderRows(buildPage(currentPage))}</tbody>;
 }
 
 export default TableBody;

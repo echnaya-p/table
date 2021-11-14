@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Pagination from "./Pagination";
 import TableHead from "./TableHead";
 import TableBody from "./TableBody";
-import './styles.css';
+import './table.css';
 
 function Table(props) {
   const { arrayOfData } = props;
@@ -13,7 +13,6 @@ function Table(props) {
   const [ selectedSort, setSelectedSort ] = useState('');
   const [ currentPage, setCurrentPage ] = useState(1);
   const [ numberPerPage, setNumberPerPage ] = useState(10);
-  const [ numberOfColumn, setNumberOfColumn ] = useState(0);
 
   const handleChangeText = (e) => {
     setText(e.target.value);
@@ -63,11 +62,10 @@ function Table(props) {
               newData={newData}
               currentPage={currentPage}
               numberPerPage={numberPerPage}
-              numberOfColum={numberOfColumn}
             />
           }
         </table>
-        {arrayOfData?.length > numberPerPage &&
+        {arrayOfData?.length > numberPerPage && newData?.length > 1 &&
           <Pagination
             newData={newData}
             currentPage={currentPage}
